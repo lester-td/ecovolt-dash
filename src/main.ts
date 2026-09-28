@@ -19,17 +19,18 @@ app.innerHTML = `
 <div class="shell">
   <div class="header">
     <div><h1>Ecovolt Explorer</h1><p>Browse the sandbox hierarchy and query energy/environment history.</p></div>
-    <div class="badge">local key proxy · key not persisted</div>
   </div>
   <div class="grid">
-    <section class="card stack">
+    <div class="steps">
+    <section class="card step-card connect-card stack">
       <h2>1 · Connect</h2>
       <label>API key <input id="apiKey" type="password" autocomplete="off" placeholder="Ecovolt API key" /></label>
       <label>System ID <input id="systemId" placeholder="System ID" /></label>
       <button id="connect" class="primary">Load directory</button>
       <div id="connectStatus" class="status">Enter your sandbox key and system ID.</div>
       <div id="directoryStats" class="directory-stats"></div>
-      <hr/>
+    </section>
+    <section class="card step-card scope-card stack">
       <h2>2 · Choose scope</h2>
       <label>Query level
         <select id="level">
@@ -43,7 +44,8 @@ app.innerHTML = `
       <label>Distribution box <select id="distributionBox"><option value="">— any / select —</option></select></label>
       <label>Device <select id="device"><option value="">— select —</option></select></label>
       <div id="selection" class="selection">Load the directory first.</div>
-      <hr/>
+    </section>
+    <section class="card step-card query-card stack">
       <h2>3 · Query</h2>
       <label>Resolution / data type <select id="mode"></select></label>
       <div id="envMetricWrap" class="hidden">
@@ -65,6 +67,7 @@ app.innerHTML = `
       <button id="run" class="primary" disabled>Run query</button>
       <div id="queryStatus" class="status"></div>
     </section>
+    </div>
 
     <section class="card">
       <h2>Results</h2>
@@ -173,7 +176,7 @@ function updateLevelControls() {
   updateModes();
   const id = entityIdForLevel(l);
   const dev = selectedDevice();
-  selection.innerHTML = `<strong>${escapeHtml(entityNameForLevel(l))}</strong><br>${escapeHtml(l)}${dev && l === 'device' ? ` · ${escapeHtml(dev.deviceType)}` : ''}${id ? `<br><span style="color:#90a49d">${escapeHtml(id)}</span>` : ''}`;
+  selection.innerHTML = `<strong>${escapeHtml(entityNameForLevel(l))}</strong><br>${escapeHtml(l)}${dev && l === 'device' ? ` · ${escapeHtml(dev.deviceType)}` : ''}${id ? `<br><span class="selection-id">${escapeHtml(id)}</span>` : ''}`;
   run.disabled = !directory || !id;
 }
 
@@ -306,8 +309,8 @@ function render(data: any, qmode: QueryMode) {
     data: { labels, datasets:[{ label: unit ? `${label} (${unit})` : label, data: values, borderWidth:2, pointRadius: values.length > 150 ? 0 : 2, tension:.12 }] },
     options: {
       responsive:true, maintainAspectRatio:false,
-      scales:{ x:{ ticks:{color:'#90a49d', maxTicksLimit:12}, grid:{color:'rgba(144,164,157,.08)'} }, y:{ ticks:{color:'#90a49d'}, grid:{color:'rgba(144,164,157,.10)'} } },
-      plugins:{ legend:{labels:{color:'#d9e9e1'}}, tooltip:{mode:'index',intersect:false} }
+      scales:{ x:{ ticks:{color:'#647c75', maxTicksLimit:12}, grid:{color:'rgba(45,95,80,.10)'} }, y:{ ticks:{color:'#647c75'}, grid:{color:'rgba(45,95,80,.12)'} } },
+      plugins:{ legend:{labels:{color:'#244b3e'}}, tooltip:{mode:'index',intersect:false} }
     }
   });
 }
